@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chuks Kitchen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Lato:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =============================================
+       CSS RESET & ROOT VARIABLES
+    ============================================= */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --orange:   #e8702a;
+      --orange-dk:#d15e1a;
+      --white:    #ffffff;
+      --text-nav: #333333;
+      --nav-h:    52px;
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* =============================================
+       NAVBAR
+    ============================================= */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: var(--nav-h);
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    /* Logo – cursive / script style */
+    .nav-logo {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.6rem;
+      color: var(--orange);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    /* Nav links */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.4rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: var(--text-nav);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--orange); }
+
+    /* Active Home link */
+    .nav-links a.active { color: var(--orange); font-weight: 700; }
+
+    /* Login button */
+    .btn-login {
+      background: var(--orange);
+      color: var(--white);
+      border: none;
+      padding: 0.5rem 1.6rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-login:hover { background: var(--orange-dk); }
+
+    /* =============================================
+       HERO SECTION
+    ============================================= */
+    .hero {
+      position: relative;
+      width: 100%;
+      /* push below fixed nav */
+      margin-top: var(--nav-h);
+      height: calc(100vh - var(--nav-h));
+      min-height: 480px;
+      overflow: visible;
+    }
+
+    /* Background food photo – using a free Unsplash image of Nigerian food spread */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('./images/HomeScreen.png');
+      background-size: cover;
+      background-position: center top;
+      /* subtle dark overlay so text pops */
+      filter: brightness(0.72);
+    }
+
+    /* Content sits on top */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 3.5rem 3rem 0 3rem;
+      max-width: 620px;
+    }
+
+    .hero-content h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.25;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .hero-content p {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 2rem;
+      text-shadow: 0 1px 5px rgba(0,0,0,0.3);
+    }
+
+    .btn-discover {
+      display: inline-block;
+      background: var(--orange);
+      color: var(--white);
+      border: none;
+      padding: 0.65rem 1.5rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-discover:hover { background: var(--orange-dk); }
+
+    /* =============================================
+       SEARCH BAR – anchored to bottom of hero
+    ============================================= */
+    .search-wrapper {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      padding: 0 2rem 0 2rem;
+      /* half-in half-out effect */
+      transform: translateY(50%);
+    }
+
+    .search-bar {
+      background: var(--white);
+      border-radius: 50px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.14);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.85rem 1.5rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .search-bar svg {
+      flex-shrink: 0;
+      color: #888;
+    }
+
+    .search-bar input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      color: #333;
+      background: transparent;
+      font-family: inherit;
+    }
+
+    .search-bar input::placeholder { color: #aaa; }
+
+    /* =============================================
+       POPULAR CATEGORIES SECTION
+    ============================================= */
+    .categories-section {
+      /* search bar is 50% out of hero, so we need padding-top to clear it */
+      margin-top: 0;
+      padding: 4.5rem 2rem 4rem;
+      background: #f0f2f5;
+    }
+
+    /* =============================================
+       CHEF'S SPECIALS SECTION
+    ============================================= */
+    .specials-section {
+      padding: 3rem 2rem 4rem;
+      background: #f0f2f5;
+    }
+
+    .specials-section h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 2rem;
+    }
+
+    .specials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .special-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .special-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+    .special-card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .special-card-body {
+      padding: 0.9rem 1rem 1.1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .special-card-body h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .special-card-body p {
+      font-size: 0.82rem;
+      color: #777;
+      line-height: 1.45;
+      flex: 1;
+    }
+
+    .special-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.8rem;
+    }
+
+    .special-price {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--orange);
+    }
+
+    .btn-cart {
+      background: var(--orange);
+      color: var(--white);
+      border: none;
+      padding: 0.45rem 1.1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-cart:hover { background: var(--orange-dk); }
+
+    @media (max-width: 640px) {
+      .specials-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 400px) {
+      .specials-grid { grid-template-columns: 1fr; }
+    }
+
+    .categories-section h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 2rem;
+    }
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .cat-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .cat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+    .cat-card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .cat-card-label {
+      padding: 1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #222;
+      text-align: left;
+    }
+
+    /* =============================================
+       RESPONSIVENESS (categories)
+    ============================================= */
+    @media (max-width: 640px) {
+      .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 400px) {
+      .categories-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 768px) {
+      nav { padding: 0 1rem; }
+
+      .nav-links { gap: 1.2rem; }
+      .nav-links a { font-size: 0.85rem; }
+
+      .hero-content { padding: 2.5rem 1.5rem 0 1.5rem; }
+      .hero-content h1 { font-size: 1.8rem; }
+      .hero-content p  { font-size: 0.95rem; }
+
+      .search-wrapper { padding: 0 1rem; }
+    }
+
+    @media (max-width: 520px) {
+      /* Collapse nav links on very small screens */
+      .nav-links { display: none; }
+      .hero-content h1 { font-size: 1.5rem; }
+    }
+
+    /* =============================================
+       PROMO BANNER SECTION
+    ============================================= */
+    .promo-section {
+      position: relative;
+      width: 100%;
+      min-height: 320px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+
+    .promo-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('./images/menu.png');
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.55);
+    }
+
+    .promo-content {
+      position: relative;
+      z-index: 2;
+      padding: 3rem 3rem;
+      max-width: 520px;
+    }
+
+    .promo-content h2 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.25;
+      margin-bottom: 0.8rem;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .promo-content p {
+      font-size: 0.95rem;
+      color: #eee;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+      font-weight: 700;
+    }
+
+    /* Avatar stack (C B 4) */
+    .avatar-stack {
+      position: absolute;
+      right: 2rem;
+      top: 2rem;
+      display: flex;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      margin-left: -10px;
+    }
+
+    .avatar:first-child { margin-left: 0; }
+    .avatar-c { background: #6c757d; }
+    .avatar-b { background: #1a73e8; }
+    .avatar-n { background: #e8702a; font-size: 0.8rem; }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    footer {
+      background: #3b2314;
+      color: #ccc;
+      padding: 3rem 2rem 1.5rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1.5fr 1fr;
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto 2rem;
+    }
+
+    /* Column 1: brand */
+    .footer-brand .footer-logo {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem;
+      color: var(--orange);
+      display: block;
+      margin-bottom: 0.8rem;
+      text-decoration: none;
+    }
+
+    .footer-brand p {
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: #bbb;
+    }
+
+    /* Column headers */
+    .footer-col h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.9rem;
+    }
+
+    /* Links */
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .footer-col ul li a {
+      text-decoration: none;
+      font-size: 0.85rem;
+      color: #bbb;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover { color: var(--orange); }
+
+    /* Contact text items */
+    .footer-col address {
+      font-style: normal;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      font-size: 0.85rem;
+      color: #bbb;
+    }
+
+    /* Bottom bar */
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 1.2rem;
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+    }
+
+    .footer-bottom p {
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    /* Scroll to top button */
+    .scroll-top {
+      width: 40px;
+      height: 40px;
+      background: rgb(84, 84, 224);
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .scroll-top:hover { background: rgb(43, 43, 155); }
+
+    @media (max-width: 700px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .promo-content { padding: 2rem 1.5rem; }
+      .promo-content h2 { font-size: 1.5rem; }
+    }
+
+    @media (max-width: 420px) {
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =================== NAVBAR =================== -->
+  <nav role="navigation" aria-label="Main navigation">
+    <a href="#" class="nav-logo">Chuks Kitchen</a>
+
+    <ul class="nav-links">
+      <li><a href="#" class="active">Home</a></li>
+      <li><a href="#">Explore</a></li>
+      <li><a href="#">My Orders</a></li>
+      <li><a href="#">Account</a></li>
+    </ul>
+
+    <button class="btn-login" aria-label="Log in to your account">Login</button>
+  </nav>
+
+  <!-- =================== HERO =================== -->
+  <section class="hero" aria-label="Hero banner">
+
+    <!-- Background image (Nigerian food feast) -->
+    <div class="hero-bg" role="img" aria-label="Overhead view of a Nigerian food spread including jollof rice, plantains, and soups"></div>
+
+    <!-- Headline + CTA -->
+    <div class="hero-content">
+      <h1>The Heart of Nigerian Home Cooking</h1>
+      <p>Handcrafted with passion, delivered with care.</p>
+      <a href="#" class="btn-discover">Discover what's new</a>
+    </div>
+
+    <!-- Search bar – floats at bottom edge of hero -->
+    <div class="search-wrapper">
+      <div class="search-bar" role="search">
+        <!-- Search icon (inline SVG – no external dependency) -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input
+          type="search"
+          placeholder="What are you craving for today?"
+          aria-label="Search for Nigerian dishes"
+        />
+      </div>
+    </div>
+
+  </section>
+
+  <!-- =================== POPULAR CATEGORIES =================== -->
+  <section class="categories-section" aria-label="Popular Categories">
+    <h2>Popular Categories</h2>
+
+    <div class="categories-grid">
+
+      <!-- Card 1: Jollof Delights -->
+      <article class="cat-card">
+        <img
+          src="./images/Property 1=Default.png"
+          alt="Jollof Rice – a classic Nigerian dish"
+        />
+        <div class="cat-card-label">Jollof Delights</div>
+      </article>
+
+      <!-- Card 2: Swallow & Soups -->
+      <article class="cat-card">
+        <img
+          src="./images/Property 1=Variant2.png"
+          alt="Swallow and soups – eba, fufu, egusi"
+        />
+        <div class="cat-card-label">Swallow &amp; Soups</div>
+      </article>
+
+      <!-- Card 3: Grills & BBQ -->
+      <article class="cat-card">
+        <img
+          src="./images/Property 1=Variant10.png"
+          alt="Grilled suya skewers on a wooden board"
+        />
+        <div class="cat-card-label">Grills &amp; BBQ</div>
+      </article>
+
+      <!-- Card 4: Sweet Treats -->
+      <article class="cat-card">
+        <img
+          src="./images/Property 1=Variant4.png"
+          alt="Sweet treats – puff puff, chin chin, cakes"
+        />
+        <div class="cat-card-label">Sweet Treats</div>
+      </article>
+
+      <!-- Card 5: Jollof Delights (repeat) -->
+      <article class="cat-card">
+        <img
+          src="./images/Property 1=Variant2.png"
+          alt="Party Jollof Rice"
+        />
+        <div class="cat-card-label">Jollof Delights</div>
+      </article>
+
+      <!-- Card 6: Jollof Delights (repeat) -->
+      <article class="cat-card">
+        <img
+          src="./images/Property 1=Variant10.png"
+          alt="Grilled meat skewers Nigerian style"
+        />
+        <div class="cat-card-label">Jollof Delights</div>
+      </article>
+
+    </div>
+  </section>
+
+
+  <!-- =================== CHEF'S SPECIALS =================== -->
+  <section class="specials-section" aria-label="Chef's Specials">
+    <h2>Chef's Specials</h2>
+    <div class="specials-grid">
+
+      <article class="special-card">
+        <img src="./images/Property 1=Variant7.png" alt="Spicy Tilapia Pepper Soup" />
+        <div class="special-card-body">
+          <h3>Spicy Tilapia Pepper Soup</h3>
+          <p>A comforting and spicy soup with tender tilapia fish, a true Nigerian delicacy.</p>
+          <div class="special-card-footer">
+            <span class="special-price">&#8358;3,500</span>
+            <button class="btn-cart">Add to cart</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="special-card">
+        <img src="./images/Property 1=Default.png" alt="Jollof Rice & Fried Chicken" />
+        <div class="special-card-body">
+          <h3>Jollof Rice &amp; Fried Chicken</h3>
+          <p>Our signature Jollof rice, cooked to perfection, served with succulent fried chicken.</p>
+          <div class="special-card-footer">
+            <span class="special-price">&#8358;3,500</span>
+            <button class="btn-cart">Add to cart</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="special-card">
+        <img src="./images/Property 1=Default.png" alt="Jollof Rice & Fried Chicken" />
+        <div class="special-card-body">
+          <h3>Jollof Rice &amp; Fried Chicken</h3>
+          <p>Our signature Jollof rice, cooked to perfection, served with succulent fried chicken.</p>
+          <div class="special-card-footer">
+            <span class="special-price">&#8358;3,500</span>
+            <button class="btn-cart">Add to cart</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="special-card">
+        <img src="./images/Property 1=Default.png" alt="Jollof Rice & Smoked Chicken" />
+        <div class="special-card-body">
+          <h3>Jollof Rice &amp; Smoked Chicken</h3>
+          <p>Our signature Jollof rice, cooked to perfection, served with succulent Smoked chicken.</p>
+          <div class="special-card-footer">
+            <span class="special-price">&#8358;3,500</span>
+            <button class="btn-cart">Add to cart</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="special-card">
+        <img src="./images/Property 1=Variant5.png" alt="Jollof Rice & Fried Chicken" />
+        <div class="special-card-body">
+          <h3>Jollof Rice &amp; Fried Chicken</h3>
+          <p>Our signature Jollof rice, cooked to perfection, served with succulent fried chicken.</p>
+          <div class="special-card-footer">
+            <span class="special-price">&#8358;3,500</span>
+            <button class="btn-cart">Add to cart</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="special-card">
+        <img src="./images/Property 1=Variant6.png" alt="Egusi Soup & Pounded Yam" />
+        <div class="special-card-body">
+          <h3>Egusi Soup &amp; Pounded Yam</h3>
+          <p>Rich and savory Egusi soup with assorted meats, paired with freshly pounded yam.</p>
+          <div class="special-card-footer">
+            <span class="special-price">&#8358;3,500</span>
+            <button class="btn-cart">Add to cart</button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- =================== PROMO BANNER =================== -->
+  <section class="promo-section" aria-label="New Menu Promotion">
+    <div class="promo-bg"></div>
+
+    <div class="promo-content">
+      <h2>Introducing Our New Menu Additions!</h2>
+      <p>Explore exciting new dishes, crafted with the freshest ingredients and authentic Nigerian flavors. Limited time offer!</p>
+      <a href="#" class="btn-discover">Discover what's new</a>
+    </div>
+  </section>
+
+  <!-- =================== FOOTER =================== -->
+  <footer aria-label="Site footer">
+    <div class="footer-grid">
+
+      <!-- Col 1: Brand -->
+      <div class="footer-brand">
+        <a href="#" class="footer-logo">Chuks Kitchen</a>
+        <p>Bringing the authentic flavors of Nigerian home cooking to your table, with passion and care.</p>
+      </div>
+
+      <!-- Col 2: Quick Links -->
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Explore</a></li>
+          <li><a href="#">My Order</a></li>
+          <li><a href="#">Account</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Contact -->
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <address>
+          <span>+234 801 234 5678</span>
+          <span>hello@chukskitchen.com</span>
+          <span>123 Taste Blvd, Lagos, Nigeria</span>
+        </address>
+      </div>
+
+      <!-- Col 4: Social -->
+      <div class="footer-col">
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <p>&copy; 2025 Lift Media. All rights reserved.</p>
+      <button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">&#8679;</button>
+    </div>
+  </footer>
+</body>
+</html>

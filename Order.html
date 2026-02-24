@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chuks Kitchen – Order Summary</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #E87722;
+      --orange-light: #f09240;
+      --brown: #3B2A1A;
+      --gray-bg: #F5F5F5;
+      --border: #E0E0E0;
+      --text: #333;
+      --muted: #888;
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      color: var(--text);
+      background: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 40px;
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.4rem;
+      color: var(--orange);
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.88rem;
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .nav-links a.active { color: var(--orange); font-weight: 700; }
+
+    .btn-login {
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      padding: 9px 24px;
+      border-radius: 4px;
+      font-size: 0.88rem;
+      cursor: pointer;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+    }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      flex: 1;
+      background: var(--gray-bg);
+      padding: 40px 20px 60px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 6px;
+      padding: 32px 36px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    }
+
+    .card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 22px;
+      color: var(--brown);
+    }
+
+    /* Promo */
+    .promo-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .promo-row {
+      display: flex;
+      gap: 0;
+      margin-bottom: 28px;
+    }
+
+    .promo-row input {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-right: none;
+      border-radius: 4px 0 0 4px;
+      padding: 9px 14px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      outline: none;
+      font-family: 'Lato', sans-serif;
+    }
+
+    .promo-row button {
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      border-radius: 0 4px 4px 0;
+      padding: 9px 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Lato', sans-serif;
+    }
+
+    /* Price rows */
+    .price-list { margin-bottom: 18px; }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      padding: 5px 0;
+      color: var(--text);
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1rem;
+      font-weight: 700;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-bottom: 22px;
+    }
+
+    /* Delivery toggle */
+    .toggle-row {
+      display: flex;
+      margin-bottom: 22px;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .toggle-btn {
+      flex: 1;
+      padding: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      font-family: 'Lato', sans-serif;
+    }
+
+    .toggle-btn.active {
+      background: var(--orange);
+      color: #fff;
+    }
+
+    .toggle-btn:not(.active) {
+      background: #fff;
+      color: var(--text);
+    }
+
+    /* Special instructions */
+    .instructions-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .instructions-area {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      resize: vertical;
+      min-height: 72px;
+      font-family: 'Lato', sans-serif;
+      outline: none;
+      margin-bottom: 22px;
+    }
+
+    /* Checkout button */
+    .checkout-btn {
+      display: block;
+      width: 100%;
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 14px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Lato', sans-serif;
+      text-align: center;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--brown);
+      color: #ccc;
+      padding: 40px 60px 20px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1.5fr 1fr;
+      gap: 40px;
+      margin-bottom: 30px;
+    }
+
+    .footer-brand .logo {
+      color: var(--orange);
+      font-size: 1.2rem;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .footer-brand p {
+      font-size: 0.8rem;
+      line-height: 1.7;
+      color: #bbb;
+    }
+
+    .footer-col h4 {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .footer-col ul { list-style: none; }
+
+    .footer-col ul li {
+      font-size: 0.8rem;
+      margin-bottom: 6px;
+      color: #bbb;
+      cursor: pointer;
+    }
+
+    .footer-col p {
+      font-size: 0.78rem;
+      color: #bbb;
+      line-height: 1.8;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #5a4030;
+      padding-top: 14px;
+      font-size: 0.75rem;
+      color: #888;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .scroll-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <span class="logo">Chuks Kitchen</span>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Explore</a></li>
+      <li><a href="#" class="active">My Orders</a></li>
+      <li><a href="#">Account</a></li>
+    </ul>
+    <button class="btn-login">Login!</button>
+  </nav>
+
+  <!-- MAIN -->
+  <main>
+    <div class="card">
+      <h2>Order Summary</h2>
+
+      <div class="promo-label">Add a Promo Code</div>
+      <div class="promo-row">
+        <input type="text" placeholder="Enter Code here" />
+        <button>Login!</button>
+      </div>
+
+      <div class="price-list">
+        <div class="price-row"><span>Subtotal</span><span>₦9,200</span></div>
+        <div class="price-row"><span>Delivery Fee</span><span>₦500</span></div>
+        <div class="price-row"><span>Service fee</span><span>₦200</span></div>
+        <div class="price-row"><span>Tax</span><span>₦0</span></div>
+      </div>
+
+      <div class="total-row">
+        <span>Total</span>
+        <span>₦9,900</span>
+      </div>
+
+      <div class="toggle-row">
+        <button class="toggle-btn active">Delivery</button>
+        <button class="toggle-btn">Pick up</button>
+      </div>
+
+      <div class="instructions-label">Special Instructions for Restaurant</div>
+      <textarea class="instructions-area" placeholder="E.g no onion, food is too spicy, food is too hot hhhhhhhhh, food is tasty"></textarea>
+
+      <button class="checkout-btn">Proceed to Checkout</button>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo">Chuks Kitchen</span>
+        <p>Bringing the authentic<br/>flavors of Nigerian<br/>home cooking to your<br/>table, with passion<br/>and care.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li>Home</li>
+          <li>Explore</li>
+          <li>My Order</li>
+          <li>Account</li>
+          <li>Contact</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <p>+234 805 234 5698<br/>hello@chukskitchen.com<br/>123 Tosha Blvd, Lagos, Nigeria</p>
+      </div>
+      <div class="footer-col">
+        <h4></h4>
+        <ul>
+          <li>Facebook</li>
+          <li>Twitter</li>
+          <li>LinkedIn</li>
+          <li>Instagram</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 All Media. All rights Reserved.</span>
+    </div>
+  </footer>
+
+  <button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chuks Kitchen – Delivery Details</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #E87722;
+      --brown: #3B2A1A;
+      --gray-bg: #F5F5F5;
+      --border: #E0E0E0;
+      --text: #333;
+      --muted: #aaa;
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      color: var(--text);
+      background: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 40px;
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.4rem;
+      color: var(--orange);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+
+    .btn-login {
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      padding: 9px 24px;
+      border-radius: 4px;
+      font-size: 0.88rem;
+      cursor: pointer;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+    }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      background: var(--gray-bg);
+      padding: 40px 20px 60px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 6px;
+      padding: 30px 32px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    }
+
+    .card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 22px;
+      color: var(--brown);
+    }
+
+    /* Address block */
+    .address-block {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 12px 14px;
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .address-block p {
+      font-size: 0.82rem;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .change-link {
+      font-size: 0.8rem;
+      color: blue;
+      white-space: nowrap;
+      cursor: pointer;
+      margin-left: 12px;
+      text-decoration: none;
+    }
+
+    /* Form fields */
+    .field-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .field-input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      color: var(--text);
+      font-family: 'Lato', sans-serif;
+      outline: none;
+      margin-bottom: 22px;
+    }
+
+    .field-input::placeholder {
+      color: var(--muted);
+    }
+
+    textarea.field-input {
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--brown);
+      color: #ccc;
+      padding: 40px 60px 20px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1.5fr 1fr;
+      gap: 40px;
+      margin-bottom: 30px;
+    }
+
+    .footer-brand .logo {
+      color: var(--orange);
+      font-size: 1.1rem;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .footer-brand p {
+      font-size: 0.78rem;
+      line-height: 1.8;
+      color: #bbb;
+    }
+
+    .footer-col h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .footer-col ul { list-style: none; }
+
+    .footer-col ul li {
+      font-size: 0.78rem;
+      margin-bottom: 6px;
+      color: #bbb;
+      cursor: pointer;
+    }
+
+    .footer-col p {
+      font-size: 0.76rem;
+      color: #bbb;
+      line-height: 1.9;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #5a4030;
+      padding-top: 14px;
+      font-size: 0.73rem;
+      color: #888;
+    }
+
+    /* Scroll top — brown not orange */
+    .scroll-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #2563EB;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <span class="logo">Chabs Kitchen</span>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Explore</a></li>
+      <li><a href="#">My Orders</a></li>
+      <li><a href="#">Account</a></li>
+    </ul>
+    <button class="btn-login">Login</button>
+  </nav>
+
+  <!-- MAIN -->
+  <main>
+    <div class="card">
+      <h2>Delivery Details</h2>
+
+      <!-- Address -->
+      <div class="address-block">
+        <p>Home: 123 Main Street, Victoria Island, Lagos<br/>Apt 4B, Opposite Mega Plaza</p>
+        <a class="change-link" href="#">Change Address</a>
+      </div>
+
+      <!-- Delivery Time -->
+      <div class="field-label">Delivery Time</div>
+      <input type="text" class="field-input" value="ASAP(30-25)" />
+
+      <!-- Delivery Instructions -->
+      <div class="field-label">Delivery Instructions (Optional)</div>
+      <textarea class="field-input" placeholder="E.g leave at the front of the door, knock twice..........."></textarea>
+
+      <!-- Contact Address -->
+      <div class="field-label">Contact Address</div>
+      <input type="text" class="field-input" value="+234 801 234 5678" />
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo">Chuks Kitchen</span>
+        <p>Bringing the authentic<br/>flavors of Nigerian<br/>home cooking to your<br/>table, with passion<br/>and care.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li>Home</li>
+          <li>Explore</li>
+          <li>My Order</li>
+          <li>Account</li>
+          <li>Contact</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <p>+234 805 234 5698<br/>hello@chukskitchen.com<br/>123 Tosha Blvd, Lagos, Nigeria</p>
+      </div>
+      <div class="footer-col">
+        <ul style="margin-top:0;">
+          <li>Facebook</li>
+          <li>Twitter</li>
+          <li>LinkedIn</li>
+          <li>Instagram</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 All Media. All rights Reserved.</span>
+    </div>
+  </footer>
+
+  <!-- Scroll top button — brown color as requested -->
+  <button class="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+</body>
+</html>
